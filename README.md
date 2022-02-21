@@ -62,6 +62,46 @@ If you want to see DPS in action again, just remove the *device-001* from the De
 2. In the **Device Management** menu on the lieft, select **Devices**.
 3. Click the checkbox before **device-001** to select the device
 
-## Explaining what happens
+## Explaining the general flow of DPS and IoT Hub
 
-When the application starts
+### Step 1. Unique ID for device and register in DPS
+
+First step is that you device needs an unique provisioning identity to register with DPS. This can be a serial number or anything like a GUID. This ID needs to be know/accessible on the device itself and needs to be part of the image that's put on the device.
+
+In DPS you know register this device with it's provisioning identity. You will also give it a IoT Hub identity here, which can be the same name but can also be something else ... as long as it is unique in that IoT Hub.
+
+The configuration for a device in DPS can also have a standard configuration in the *Device Twin*. The device twin is a JSON structure available for the device in IoT Hub. A device twin can contain *Required* settings that can only be change on the server side, but read on the client device. A device twin can also contain *Reported* settings that can be changed on the client side to report back configuration. In the device twin in IoT Hub are all kinds of information added for detailed tracking like timestamps and (generated) versionnumbers.
+
+![Register device with a provisioning ID](Images/flow-1-registration.PNG)
+
+### Step 2. Run code on the device to connect to DPS
+
+The device needs to run code to connect to the global DPS endpoint and use the devices unique provisioning identity to register with DPS. You also need security measures in this connection like a symmetric key or (more secure) certificates.
+
+DPS will look up the provisioning device ID and connect to the configured IoT Hub. If the device isn't registered yet with that IoT Hub, it will be registered there with the given IoT Hub device id. The DPS service will now return the IoT Hub hostname and the IoT Hub identity to the application on the device. This enables the device now to connect to the IoT Hub with his identity.
+
+![Connect to DPS with the provisioning ID](Images/flow-2-dps.PNG)
+
+### Step 3. Connect to IoT Hub for configuration and/or sending telemetry (and more)
+
+Now the application on the device knows the endpoint of the IoT Hub to connect to. It can read the *Device Twin* configuration if needed, and it can also report back as described.
+
+The code can now also send and receive messages to or from the IoT Hub.
+
+![Connect to DPS with the provisioning ID](Images/flow-3-iothub.PNG)
+
+## Explaining IoT Hub Edge
+
+IoT Hub Edge is a part of IoT Hub and offers extra management and runtime functionalities. A device can be a 'normal' device or an 'IoT Edge' device. An IoT Edge device must have the IoT Edge runtime installed (an agent and a local hub). If this device is provisioned, the IoT Edge device in the Azure portal will show more information. It will show the health of the IoT Edge runtime to start with so this can be monitored.
+
+Once this is done, the IoT Edge runtime on the device can install, run, update and delete *IoT Edge Modules*. A module is a container which can come from the Azure marketplace, but you can also create your own custom modules. In the Azure Portal you can add, upgrade and delete modules for the device. This will be handled by the IoT Edge runtime on the device. If needed, it will download the container. It will run it and check it's health. If it crashes, the runtime makes sure it's restarted.
+
+Each IoT Edge module has it's own *Module Identity Twin* which can contain required settings and reported settings for just the module on a device.
+
+## Resources
+
+This is just a high-level overview, where lots of details (like security) are skipped. But I hope it helps you to have a better understanding of these Azure IoT Services and how you can use the in your own environment or settings.
+
+More information can be found here:
+
+* 
