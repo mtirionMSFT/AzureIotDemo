@@ -1,4 +1,5 @@
 # Azure IoT Demo
+
 This is a .NET Console App demonstrating the basic flow of Azure Device Provisioning Service (DPS), Azure IoT Hub and using Device Twins. This can be run from the console of your development machine, which will enroll the device. But you can also use this app on a Raspberry Pi, as is explained in the last part of the walkthrough.
 
 In this demo we've been using symmetric keys, because that's easier to setup.
@@ -15,17 +16,16 @@ In this demo we've been using symmetric keys, because that's easier to setup.
 
 1. Sign in to the [Azure portal](https://portal.azure.com/).
 2. On the left-hand menu or on the portal page, select **All resources**.
-3. 
-4. In the **Add Enrollment** page, enter the following information.
-   - **Mechanism**: Select *Symmetric Key* as the identity attestation Mechanism.
-   - **Auto-generate keys**: Check this box.
-   - **Registration ID**: Enter a registration ID to identify the enrollment. In this demo we'll be using *prov-device-001*.
-   - **IoT Hub Device ID:** Enter a device identifier. In this demo we'll be using *device-001*
-   - **Select the IoT hubs this device can be assigned to:** select the IoT Hub you created.![DPS-enroll-device](Images/DPS-enroll-device.png)
-5. Select **Save**. A **Primary Key** and **Secondary Key** are generated and added to the enrollment entry, and you are taken back to the **Manage enrollments** page.
-6. To view your simulated symmetric key device enrollment, select the **Individual Enrollments** tab.
-7. Select your device (*prov-device-001*).
-8. Copy the value of the generated **Primary Key**.
+3. In the **Add Enrollment** page, enter the following information.
+   * **Mechanism**: Select *Symmetric Key* as the identity attestation Mechanism.
+   * **Auto-generate keys**: Check this box.
+   * **Registration ID**: Enter a registration ID to identify the enrollment. In this demo we'll be using *prov-device-001*.
+   * **IoT Hub Device ID:** Enter a device identifier. In this demo we'll be using *device-001*
+   * **Select the IoT hubs this device can be assigned to:** select the IoT Hub you created.![DPS-enroll-device](Images/DPS-enroll-device.png)
+4. Select **Save**. A **Primary Key** and **Secondary Key** are generated and added to the enrollment entry, and you are taken back to the **Manage enrollments** page.
+5. To view your simulated symmetric key device enrollment, select the **Individual Enrollments** tab.
+6. Select your device (*prov-device-001*).
+7. Copy the value of the generated **Primary Key**.
    ![Getting the device primary key](Images/dps-device-properties.png)
 
 ## Run the AzureIoTDemo Application
@@ -49,7 +49,7 @@ AzureIoTDemo -s [IdScope] -d prov-device-001 -k [device primary key]
 
 When you build the solution, the executable is by default located in the folder `bin\Debug\net6.0`. You can also add the parameters in Visual Studio 2022 via the menu Debug > AzureIoTDemo Debug Properties > Command line arguments and click Run (or press F5).
 
-When the application ran successfully, you can check the automatically setup device in Azure IoT Hub. 
+When the application ran successfully, you can check the automatically setup device in Azure IoT Hub.
 
 1. Select your Azure IoT Hub.
 2. In the **Device Management** menu on the lieft, select **Devices**.
@@ -104,4 +104,11 @@ This is just a high-level overview, where lots of details (like security) are sk
 
 More information can be found here:
 
-* 
+* [Azure IoT – Internet of Things Platform | Microsoft Azure](https://azure.microsoft.com/en-us/overview/iot/)
+* [Quickstart - Provision a simulated symmetric key device to Microsoft Azure IoT Hub | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-dps/quick-create-simulated-device-symm-key?pivots=programming-language-csharp)
+* [Understand Azure IoT Hub device twins | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-device-twins)
+* [Quickstart create an Azure IoT Edge device on Linux | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-edge/quickstart-linux?view=iotedge-2020-11)
+* [Create and provision an IoT Edge device on Linux using symmetric keys - Azure IoT Edge | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-provision-single-device-linux-symmetric?view=iotedge-2020-11&tabs=azure-portal%2Cubuntu)
+* [Tutorial - Develop module for Linux devices using Azure IoT Edge | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux?view=iotedge-2020-11)
+* [Certificates for device security - Azure IoT Edge | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-edge/iot-edge-certs?view=iotedge-2020-11)
+* [Create test certificates - Azure IoT Edge | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-create-test-certificates?view=iotedge-2020-11)
