@@ -13,7 +13,6 @@
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.40.0" />
     <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Client" Version="1.19.1" />
     <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Transport.Http" Version="1.15.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

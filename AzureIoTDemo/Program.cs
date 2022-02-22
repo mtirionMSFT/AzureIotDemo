@@ -1,12 +1,11 @@
 ﻿namespace AzureIoTDemo
 {
-    using CommandLine;
     using AzureIoTDemo.Model;
+    using CommandLine;
     using Microsoft.Azure.Devices.Client;
     using Microsoft.Azure.Devices.Provisioning.Client;
     using Microsoft.Azure.Devices.Provisioning.Client.Transport;
     using Microsoft.Azure.Devices.Shared;
-    using Newtonsoft.Json;
     using System.Text;
 
     internal class Program
@@ -20,29 +19,10 @@
                 .WithNotParsed(e => Environment.Exit(1));
             #endregion
 
-            // read local config
-            string configPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
-            AppSettings settings = TryReadLocalConfiguration(configPath);
+            AppSettings settings = new AppSettings();
 
-            if (string.IsNullOrEmpty(settings.IotHubEndpoint))
+            if (!ConnectToDps(parameters, settings))
             {
-                // we don't have an IotHub registered, so connect to DPS to provision
-                if (ConnectToDps(parameters, settings))
-                {
-                    #region log
-                    Console.WriteLine("Saving in local settings.");
-                    #endregion
-                    File.WriteAllText(configPath, JsonConvert.SerializeObject(settings));
-                }
-                else
-                {
-                    Environment.Exit(1);
-                }
-            }
-
-            if (string.IsNullOrEmpty(settings.IotHubEndpoint))
-            {
-                // We still don't know IOT HUB settings, so stop processing
                 Environment.Exit(1);
             }
 
@@ -69,10 +49,7 @@
             {
                 #region log error
                 Console.WriteLine($"ERROR: {ex.Message}");
-                Console.WriteLine($"ERROR: {ex.Message}");
-                Console.WriteLine("Removing local config. Please restart the app.");
                 #endregion
-                File.Delete(configPath);
                 Environment.Exit(1);
             }
             finally
@@ -85,9 +62,6 @@
                     context.Device.CloseAsync().Wait();
                 }
             }
-
-            Console.WriteLine("Press ENTER ...");
-            Console.ReadLine();
         }
 
         private static bool ConnectToDps(Parameters parameters, AppSettings settings)
@@ -206,26 +180,6 @@
             #endregion
             context.Device.SendEventAsync(eventMessage).Wait();
             context.MessageId++;
-        }
-
-        private static AppSettings TryReadLocalConfiguration(string configPath)
-        {
-            if (File.Exists(configPath))
-            {
-                #region log
-                Console.WriteLine("Reading configuration");
-                #endregion
-                string json = File.ReadAllText(configPath);
-                AppSettings settings = JsonConvert.DeserializeObject<AppSettings>(json);
-                #region log
-                Console.WriteLine("Configuration read.");
-                Console.WriteLine($"DeviceId: {settings.DeviceId}");
-                Console.WriteLine($"IoT Hub: {settings.IotHubEndpoint}\n");
-                #endregion
-                return settings;
-            }
-
-            return new AppSettings();
         }
 
         private static Task OnTwinChanged(TwinCollection desiredProperties, object userContext)
