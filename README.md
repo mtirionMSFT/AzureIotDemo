@@ -4,6 +4,8 @@ This is a .NET Console App demonstrating the basic flow of Azure Device Provisio
 
 In this demo we've been using symmetric keys, because that's easier to setup.
 
+If you are interested in first understanding what the Azure IoT services are that are used and how they relate to each other, have a look first at this blogpost: [High-level overview of Azure IoT services (with .NET demo app) | by Martin Tirion | Feb, 2022 | Medium](https://mtirion.medium.com/high-level-overview-of-azure-iot-services-with-net-demo-app-2a2afe793adc)
+
 ## Prerequisites
 
 * An Azure subscription
@@ -68,7 +70,7 @@ If you want to see DPS in action again, just remove the *device-001* from the De
 
 First step is that you device needs an unique provisioning identity to register with DPS. This can be a serial number or anything like a GUID. This ID needs to be know/accessible on the device itself and needs to be part of the image that's put on the device.
 
-In DPS you know register this device with it's provisioning identity. You will also give it a IoT Hub identity here, which can be the same name but can also be something else ... as long as it is unique in that IoT Hub.
+In DPS you now register this device with it's provisioning identity. You will also give it a IoT Hub identity here, which can be the same name but can also be something else ... as long as it is unique in that IoT Hub.
 
 The configuration for a device in DPS can also have a standard configuration in the *Device Twin*. The device twin is a JSON structure available for the device in IoT Hub. A device twin can contain *Required* settings that can only be change on the server side, but read on the client device. A device twin can also contain *Reported* settings that can be changed on the client side to report back configuration. In the device twin in IoT Hub are all kinds of information added for detailed tracking like timestamps and (generated) versionnumbers.
 
